@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="csrf-token" content="3CNzWAFoY4GXgOuOg9BXT5P7RAtNc9hnyDL4CD7w">
-		<title>Laravel</title>
+		<title>CodeIgniter</title>
 		<!-- Fonts -->
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
 		<!-- Styles -->

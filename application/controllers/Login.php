@@ -8,11 +8,10 @@ class Login extends CI_Controller {
     {
         parent::__construct();
         $this->load->library('session');
-        $this->load->model('User_model');
     }
 
     /**
-     * Check HTTP method.
+     * Check HTTP request method.
      */
     public function index()
     {
@@ -21,7 +20,6 @@ class Login extends CI_Controller {
         } else {
             $this->create();
         }
-        
     }
 
     /**
@@ -29,7 +27,7 @@ class Login extends CI_Controller {
      */
     public function create()
     {
-        if ($this->auth->guest() != TRUE) {
+        if (!$this->auth->guest()) {
             redirect(base_url('dashboard'));
         }
 
@@ -41,20 +39,26 @@ class Login extends CI_Controller {
      */
     public function store()
     {
-        if ($this->auth->guest() != TRUE) {
+        if (!$this->auth->guest()) {
             redirect(base_url('dashboard'));
         }
 
-        $email = $this->input->post('email');
-        $password = $this->input->post('password');
-        $user = User_model::where('email', $email)->first();
+        $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+        $this->form_validation->set_rules('password', 'Password', 'required');
 
-        if (isset($user) && $this->bcrypt->check_password($password, $user->password)) {
-            $this->auth->login($user);
-            redirect(base_url('dashboard'));
+        if ($this->form_validation->run() == FALSE) {
+            $this->load->view('auth/login');
+        } else {
+            $email = $this->input->post('email');
+            $password = $this->input->post('password');
+    
+            if ($this->auth->authenticate_user($email, $password)) {
+                redirect(base_url('dashboard'));
+            } else {
+                $data['errors'] = 'These credentials do not match our records.';
+                $this->load->view('auth/login', $data);
+            }
         }
-
-        redirect(base_url('login'));
     }
 
     /**
@@ -62,7 +66,7 @@ class Login extends CI_Controller {
      */
     public function logout()
     {
-        if ($this->auth->authenticated() != TRUE) {
+        if (!$this->auth->authenticated()) {
             redirect(base_url('login'));
         }
         $this->auth->logout();

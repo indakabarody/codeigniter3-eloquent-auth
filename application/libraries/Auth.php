@@ -14,12 +14,33 @@ class Auth {
     }
 
     /**
+     * Check the user credentials.
+     *
+     * @param  $email, $password
+     * @return bool
+     */
+    public function authenticate_user($email, $password = null)
+    {
+        $this->ci()->load->model('User_model');
+
+        $user = User_model::where('email', $email)->first();
+
+        if (isset($user) && $this->ci()->bcrypt->check_password($password, $user->password)) {
+            $this->login($user);
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    /**
      * Login the user.
      *
      * @param  $user
      * @return bool
      */
-    public function login($user = null)
+    public function login($user)
     {
         $this->ci()->session->set_userdata([
             'id' => $user->id,

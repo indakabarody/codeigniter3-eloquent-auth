@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="csrf-token" content="VKT5eThzz0wFjlRlFcsnHtIwObOSA0L15w3julzJ">
-		<title>Laravel</title>
+		<title>CodeIgniter</title>
 		<!-- Fonts -->
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
 		<!-- Styles -->
@@ -17,7 +17,33 @@
 			<div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
 				<div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
 					<!-- Session Status -->
-					<!-- Validation Errors -->
+					<?php
+						if (validation_errors() != NULL) {?>
+							<!-- Validation Errors -->
+							<div class="mb-4">
+								<div class="font-medium text-red-600">
+								Whoops! Something went wrong.
+								</div>
+
+								<ul class="mt-3 list-disc list-inside text-sm text-red-600">
+								<?= validation_errors() ?>
+								</ul>
+							</div>
+						<?php }
+
+						if ($errors != NULL) {?>
+							<!-- Validation Errors -->
+							<div class="mb-4">
+								<div class="font-medium text-red-600">
+								Whoops! Something went wrong.
+								</div>
+
+								<ul class="mt-3 list-disc list-inside text-sm text-red-600">
+								<?= $errors ?>
+								</ul>
+							</div>
+						<?php }
+					?>
 					<form method="POST" action="<?= base_url('login') ?>">
 						<!-- Email Address -->
 						<div>
